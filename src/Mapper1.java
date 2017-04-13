@@ -4,6 +4,11 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 public class Mapper1 extends Mapper<LongWritable, Text, Text, Text>{
+	
+	/*
+	 * Input: (dummy key, all fields separated by commas)
+	 * Output: (state,field,years,gender, necessary fields separated by commas including state)
+	 */
 
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
 
