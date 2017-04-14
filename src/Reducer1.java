@@ -1,5 +1,6 @@
 import java.io.IOException;
 
+//import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
@@ -7,8 +8,8 @@ import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 public class Reducer1 extends Reducer<Text,Text,Text,Text>{
 	
 	/*
-	 * Input: (state,field,years,gender, necessary fields separated by commas)
-	 * Output: (state,field,years,gender, necessary fields separated by commas)
+	 * Input: (state,years,necessary fields separated by commas)
+	 * Output: (state,years,necessary fields separated by commas)
 	 */
 	
 	private MultipleOutputs<Text, Text> output;
@@ -26,14 +27,10 @@ public class Reducer1 extends Reducer<Text,Text,Text,Text>{
 	public void reduce(Text key, Iterable<Text> values, Context context) throws
 	IOException, InterruptedException {
 
-		int count = 0;
-		
-		for(Text val: values){
-			count++;
+		for (Text value : values) {
+			output.write("job1output", key, value);
 		}
 		
-		String countString = String.valueOf(count);
 		
-		output.write("job1output", key, new Text("|"+ countString));
 	}
 }

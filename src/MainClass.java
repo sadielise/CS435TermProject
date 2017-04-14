@@ -21,7 +21,6 @@ public class MainClass {
 			System.exit(-1);
 		}
 		
-		//commment by chad
 		Configuration conf = new Configuration();
 		
 		Job job1 = Job.getInstance(conf);
