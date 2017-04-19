@@ -33,7 +33,28 @@ public class MainClass1 {
 		job1.setInputFormatClass(TextInputFormat.class);
 		job1.setOutputFormatClass(TextOutputFormat.class);
 		
-		FileInputFormat.setInputPaths(job1, new Path(args[0]));
+		String path = args[0];
+		
+		FileInputFormat.setInputPaths(job1, new Path(new String(path+"1996")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"1997")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"1998")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"1999")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2000")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2001")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2002")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2003")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2004")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2005")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2006")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2007")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2008")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2009")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2010")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2011")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2012")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2013")));
+		FileInputFormat.addInputPath(job1, new Path(new String(path+"2014")));
+		
 		FileOutputFormat.setOutputPath(job1, new Path("/Job1"));	
 		
 		System.exit(job1.waitForCompletion(true) ? 0 : 1);
