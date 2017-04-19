@@ -51,7 +51,7 @@ public class MainClass {
 		
 		job2.setOutputKeyClass(Text.class);
 		job2.setOutputValueClass(Text.class);
-		
+	
 		job2.setMapperClass(Mapper2.class);
 		job2.setReducerClass(Reducer2.class);
 

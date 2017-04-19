@@ -1,30 +1,31 @@
 import java.io.IOException;
 
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
-public class Reducer2 extends Reducer<Text,Text,Text,Text>{
+public class Reducer2 extends Reducer<Text,Text,NullWritable,Text>{
 	
 	/*
-	 * Input: (university name, necessary fields separated by commas)
-	 * Output: (university name, score, state, average net price, average earnings)
+	 * Input: (OPEID, earnings)
+	 * Output: (OPEID, average earnings)
 	 */
-	
-	private MultipleOutputs<Text, Text> output;
-	
-	@Override
-	public void setup(Context context){
-		output = new MultipleOutputs<Text, Text>(context);
-	}
-	
-	@Override
-	protected void cleanup(Context context) throws IOException, InterruptedException{
-		output.close();
-	}
 	
 	public void reduce(Text key, Iterable<Text> values, Context context) throws
 	IOException, InterruptedException {
-
+	
+		int count = 0;
+		int total = 0;
+		for(Text val: values){
+			String strVal = val.toString();
+			int intVal = Integer.valueOf(strVal);
+			total += intVal;
+			count++;
+		}
+		
+		int average = total / count;
+		String strAverage = String.valueOf(average);
+		
+		context.write(NullWritable.get(), new Text(key.toString() + "," + strAverage));
 	}
 }

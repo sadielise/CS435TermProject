@@ -6,11 +6,16 @@ import org.apache.hadoop.mapreduce.Mapper;
 public class Mapper2 extends Mapper<LongWritable, Text, Text, Text>{
 	
 	/*
-	 * Input: (state,field,years,gender, necessary fields separated by commas)
-	 * Output: (university name, necessary fields separated by commas)
+	 * Input: (OPEID, earnings)
+	 * Output: (OPEID, earnings)
 	 */
 
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
-
+		
+		String[] vals = value.toString().split(",");
+		String id = vals[0];
+		String earnings = vals[1];
+		
+		context.write(new Text(id), new Text(earnings));
 	}
 }
