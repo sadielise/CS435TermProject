@@ -1,30 +1,33 @@
 import java.io.IOException;
 
+import org.apache.commons.math3.stat.regression.SimpleRegression;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
-public class Reducer3 extends Reducer<Text,Text,Text,Text>{
+public class Reducer3 extends Reducer<Text,Text,NullWritable,Text>{
 	
 	/*
-	 * Input: (university name, score, state, average net price, average earnings)
-	 * Output: (university name, score, state, average net price, average earnings)
+	 * Input: (OPEID,bracket_index, datayear,annual cost) 
+	 * Output: (OPEID,bracket_index,slope,intercept)
 	 */
-	
-	private MultipleOutputs<Text, Text> output;
-	
-	@Override
-	public void setup(Context context){
-		output = new MultipleOutputs<Text, Text>(context);
-	}
-	
-	@Override
-	protected void cleanup(Context context) throws IOException, InterruptedException{
-		output.close();
-	}
 	
 	public void reduce(Text key, Iterable<Text> values, Context context) throws
 	IOException, InterruptedException {
-
+		
+		SimpleRegression sr = new SimpleRegression(true);
+		
+		for(Text val: values){
+			String[] vals = val.toString().split(",");
+			double year = Double.valueOf(vals[0]);
+			double cost = Double.valueOf(vals[1]);
+			sr.addData(year, cost);
+		}
+		
+		double slope = sr.getSlope();
+		double intercept = sr.getIntercept();
+		
+		context.write(NullWritable.get(), new Text(key.toString() + "," + String.valueOf(slope) + "," + String.valueOf(intercept)));
+		
 	}
 }
