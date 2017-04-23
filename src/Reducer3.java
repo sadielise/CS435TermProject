@@ -17,7 +17,9 @@ public class Reducer3 extends Reducer<Text,Text,NullWritable,Text>{
 		
 		SimpleRegression sr = new SimpleRegression(true);
 		
+		int count = 0;
 		for(Text val: values){
+			count++;
 			String[] vals = val.toString().split(",");
 			double year = Double.valueOf(vals[0]);
 			double cost = Double.valueOf(vals[1]);
@@ -27,7 +29,8 @@ public class Reducer3 extends Reducer<Text,Text,NullWritable,Text>{
 		double slope = sr.getSlope();
 		double intercept = sr.getIntercept();
 		
-		context.write(NullWritable.get(), new Text(key.toString() + "," + String.valueOf(slope) + "," + String.valueOf(intercept)));
-		
+		if(count > 1){
+			context.write(NullWritable.get(), new Text(key.toString() + "," + String.valueOf(slope) + "," + String.valueOf(intercept)));
+		}
 	}
 }
