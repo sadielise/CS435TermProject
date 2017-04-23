@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 public class Mapper1 extends Mapper<LongWritable, Text, Text, Text>{
 	
@@ -50,17 +51,25 @@ public class Mapper1 extends Mapper<LongWritable, Text, Text, Text>{
 		//meanEarnings new index: 4
 		//toWrite.add(new String(values[meanEarningsIndex]));
 		//institutionID new index: 5
+		if(values[institutionIndex].equalsIgnoreCase("OPEID6")){
+			return;
+		}
 		toWrite.add(new String(values[institutionIndex]));
 		//institutionName new index: 6
 		toWrite.add(new String(values[institutionNameIndex]));
 		//fieldsOfStudy new index: 7-44
 		for(int i = firstDegreeIndex; i<=lastDegreeIndex; i++){
-			toWrite.add(new String(values[i]));
+			if(values[i].equalsIgnoreCase("NULL")){
+				toWrite.add(new String("0"));
+			}
+			else{
+				toWrite.add(new String(values[i]));
+			}
 		}
 		//cost by income bracket new index: 45-64
 		int count = 0;
 		for(int i = firstIncomeIndex; i<=lastIncomeIndex; i++){
-			if(values[i]!="NULL" && count<4){
+			if(!values[i].equalsIgnoreCase("NULL") && count<5){
 				toWrite.add(new String(values[i]));
 				count++;
 			}
@@ -69,7 +78,8 @@ public class Mapper1 extends Mapper<LongWritable, Text, Text, Text>{
 		//cost no income if income values not available
 		if(count == 0){
 			for(int i = firstCostNoIncomeIndex; i<= lastCostNoIncomeIndex; i++){
-				if(values[i]!="NULL"){
+				if(!values[i].equalsIgnoreCase("NULL")){
+					toWrite.add(new String(values[i]));
 					toWrite.add(new String(values[i]));
 					toWrite.add(new String(values[i]));
 					toWrite.add(new String(values[i]));
@@ -81,7 +91,16 @@ public class Mapper1 extends Mapper<LongWritable, Text, Text, Text>{
 		}
 		
 		if(count!=0){
-			String newKey = "2000,";
+			String prev = new String(toWrite.get(toWrite.size()-1));
+			while(count<5){
+				toWrite.add(new String(prev));
+				count++;
+			}
+			
+			
+			context.getInputSplit();
+			String fileName = ((FileSplit) context.getInputSplit()).getPath().getName()+",";
+			//String newKey = "2000,";context.getInputSplit();
 			
 					
 					
@@ -93,7 +112,7 @@ public class Mapper1 extends Mapper<LongWritable, Text, Text, Text>{
 			//new size SHOULD == 64;
 			
 			if(toWrite.size() != 0){
-				context.write(new Text(newKey), new Text(newVal));
+				context.write(new Text(fileName), new Text(newVal));
 			}
 		}
 	}
