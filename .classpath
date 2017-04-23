@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="/s/bach/l/under/ceitel/hadoopConf/hadoopJars/hadoop-common-2.6.0.jar"/>
 	<classpathentry kind="lib" path="/s/bach/l/under/ceitel/hadoopConf/hadoopJars/hadoop-mapreduce-client-core-2.6.0.jar"/>
 	<classpathentry kind="lib" path="/s/bach/l/under/ceitel/hadoopConf/hadoopJars/hadoop-mapreduce-client-jobclient-2.6.0.jar"/>
+	<classpathentry kind="lib" path="/s/bach/l/under/ceitel/cs435/TP/commons-math3-3.6.1/commons-math3-3.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
